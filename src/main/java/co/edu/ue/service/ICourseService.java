@@ -12,5 +12,8 @@ public interface ICourseService {
 	Course searchByIdCourse(int id);
 	boolean postByCourse(Course course);
 	boolean statusCourse(int id, String status);
+	boolean deleteCourse(int id);
+    boolean updateCourse(int id, Course course);
+
 
 }

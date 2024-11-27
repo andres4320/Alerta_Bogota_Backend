@@ -11,4 +11,7 @@ public interface ICourseDao {
 	
 	boolean postCourse(Course course);
 	boolean statusCourse(int id, String status);
+	boolean deleteCourse(int id);
+    boolean updateCourse(int id, Course course);
+
 }

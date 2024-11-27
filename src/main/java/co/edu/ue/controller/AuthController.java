@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,39 +21,47 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.ue.util.Tools;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+import static co.edu.ue.util.Tools.*;
+
+@Tag(name = "Controlador para Login", description = "Este es el controlador para login utilizando JWT")
 @CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
+	
+	@Autowired
+	AuthenticationManager authManager;
 
-	AuthenticationManager authenticationManager;
-	
-	public AuthController(AuthenticationManager authenticationManager) {
+	public AuthController(AuthenticationManager authManager) {
 		super();
-		this.authenticationManager = authenticationManager;
+		this.authManager = authManager;
+		
 	}
-	
+	@Operation(summary = "Iniciar sesión en la Aplicacion", description = "El usuario se puede loguear para usar los métodos.")
 	@PostMapping(value = "login", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> getLogin(@RequestParam("user") String user, 
-	                                       @RequestParam("pwd") String pwd) {
+	public ResponseEntity<String> login(@RequestParam("user") String user,
+	                                     @RequestParam("pwd") String pwd) {
 	    try {
-	        Authentication authentication = authenticationManager.authenticate(
+	        Authentication authentication = authManager.authenticate(
 	                new UsernamePasswordAuthenticationToken(user, pwd));
-	        
-	        // Suponiendo que el método `getToken` devuelve un token como String.
-	        String token = getToken(authentication);
-	        return new ResponseEntity<>(token, HttpStatus.OK);
-	    } catch (AuthenticationException e) {
+	        System.out.println("COntroller Usuario autenticado: " + authentication.getName());
+	        System.out.println("COntroller Autoridades: " + authentication.getAuthorities());
+	        return new ResponseEntity<>(getToken(authentication), HttpStatus.OK);
+	    } catch (AuthenticationException ex) {
+	        ex.printStackTrace();
+	        System.out.println("Error de autenticación: " + ex.getMessage());
 	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	    }
 	}
-		
+	
 	private String getToken(Authentication authentication) {
 		// Asegúrate de que estás obteniendo las autoridades correctas
 	    List<String> authorities = authentication.getAuthorities().stream()
 	            .map(GrantedAuthority::getAuthority)
 	            .collect(Collectors.toList());
- 
+
 	    // Imprimir las autoridades para depuración
 	    System.out.println("*****************COntroller***********************");
 	    System.out.println("Autoridades: " + authorities);
@@ -65,8 +73,9 @@ public class AuthController {
 	                .map(GrantedAuthority::getAuthority)
 	                .collect(Collectors.toList()))
 	        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-	        .signWith(Keys.hmacShaKeyFor(Tools.CLAVE.getBytes()))
+	        .signWith(Keys.hmacShaKeyFor(CLAVE.getBytes()))
 	        .compact();
 	    return token;
 	}
+
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import io.jsonwebtoken.Claims;
@@ -18,28 +19,32 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static co.edu.ue.util.Tools.*;
+
 public class AuthorizationFilterJWT extends BasicAuthenticationFilter {
 
 	public AuthorizationFilterJWT(AuthenticationManager authenticationManager) {
-		super(authenticationManager);
-	}
-
+        super(authenticationManager);		
+    }
+	
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		//super.doFilterInternal(request, response, chain);
-		String header = request.getHeader(Tools.ENCABEZADO);
-		
-		if(header == null || !header.startsWith(Tools.PREFIJO_TOKEN)) {
-			chain.doFilter(request, response);
-			return;
-		}	
-		//Obtenemos los datos del usuario a partir del Token
-		UsernamePasswordAuthenticationToken authetication = getAuthentication(request);
-		chain.doFilter(request, response);
-	}
+    protected void doFilterInternal(HttpServletRequest request, 
+            HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        String header = request.getHeader(ENCABEZADO);
+        System.out.println("Encabezado: " + header);
+        if (header == null || !header.startsWith(PREFIJO_TOKEN)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        //Obtenemos los datos del usuario a partir del Token
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        chain.doFilter(request, response);	
+    }
 
-	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+	private UsernamePasswordAuthenticationToken getAuthentication
+	(HttpServletRequest request) {
 	    // Revisar que el token venga en la cabecera de la petición
 	    String token = request.getHeader(Tools.ENCABEZADO);
 

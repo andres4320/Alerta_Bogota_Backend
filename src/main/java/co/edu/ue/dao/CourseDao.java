@@ -40,4 +40,23 @@ public class CourseDao implements ICourseDao {
         }
         return false;
 	}
+	
+	@Override
+	public boolean updateCourse(int id, Course course) {
+	    if (jpa.existsById(id)) {
+	        course.setCouId(id);
+	        jpa.save(course);
+	        return true;
+	    }
+	    return false;
+	}
+	
+	@Override
+	public boolean deleteCourse(int id) {
+	    if (jpa.existsById(id)) {
+	        jpa.deleteById(id);
+	        return true;
+	    }
+	    return false;
+	}
 }

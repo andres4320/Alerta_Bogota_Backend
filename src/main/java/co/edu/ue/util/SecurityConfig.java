@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -55,6 +56,19 @@ public class SecurityConfig {
 		return jdbcDetails;
 	}
 	
+	// Método para imprimir usuario/rol
+    private void printUsers(DriverManagerDataSource ds) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+
+        // Imprimir usuarios
+        List<String> users = jdbcTemplate.query("SELECT use_user FROM users", (rs, rowNum) -> rs.getString("use_user"));
+        System.out.println("Usuarios en la base de datos: " + users);
+
+        // Imprimir roles (
+        List<String> roles = jdbcTemplate.query("SELECT rol FROM roles", (rs, rowNum) -> rs.getString("rol"));
+        System.out.println("Roles en la base de datos: " + roles);
+    }
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(cus->cus.disable())
@@ -69,4 +83,17 @@ public class SecurityConfig {
 		return http.build();
  
 	}
+    
+    /*@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(cus -> cus.disable())
+            .authorizeHttpRequests(aut -> 
+                aut.requestMatchers(HttpMethod.POST,"/api-courses/course").hasAnyRole("ADMINS")
+                   .requestMatchers(HttpMethod.GET,"/api-courses/courses-all").hasAnyAuthority("ADMINS")
+                   //.anyRequest().permitAll() 
+            )
+            .addFilter(new AuthorizationFilterJWT(auth));
+
+        return http.build();
+    }*/
 }

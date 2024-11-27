@@ -55,4 +55,15 @@ public class CourseService implements ICourseService {
 	public boolean statusCourse(int id, String status) {
 		return dao.statusCourse(id, status);
 	}
+	
+	@Override
+	public boolean updateCourse(int id, Course course) {
+	    return dao.updateCourse(id, course);
+	}
+	
+	@Override
+	public boolean deleteCourse(int id) {
+	    return dao.deleteCourse(id);
+	}
+		
 }
