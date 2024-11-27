@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @OpenAPIDefinition(
 		info=@Info(
-				title = "10-CoursesDataBaseJWT",
+				title = "Alerta Bogota",
 				description = "Autenticacion con JWT",
 				termsOfService = "Debe aceptar terminos y condiciones",
 				contact = @Contact(name = "sergio.andres.garzon17@gmail.com",
