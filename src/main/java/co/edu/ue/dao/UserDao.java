@@ -9,47 +9,41 @@ import co.edu.ue.jpa.IUserJpa;
 @Repository
 public class UserDao implements IUserDao {
 
-    @Autowired
-    private IUserJpa jpa;
+   @Autowired
+   private IUserJpa jpa;
 
-    @Override
-    public List<User> listUsers() {
-        return jpa.findAll();
-    }
+   @Override
+   public List<User> listUsers() {
+       return jpa.findAll();
+   }
 
-    /*@Override
-    public User searchById(int id) {
-        //return jpa.findById(id).orElse(null);
-    }*/
+   @Override
+   public User searchById(int id) {
+       return jpa.findById(id).orElse(null);
+   }
 
-    @Override
-    public boolean postUser(User user) {
-        if (jpa.save(user) != null) return true;
-        return false;
-    }
+   @Override
+   public boolean postUser(User user) {
+       if (jpa.save(user) != null) return true;
+       return false;
+   }
 
-    @Override
-    public boolean updateUser(int id, User user) {
-        if (jpa.existsById(id)) {
-            user.setUserId(id);
-            jpa.save(user);
-            return true;
-        }
-        return false;
-    }
+   @Override
+   public boolean updateUser(int id, User user) {
+       if (jpa.existsById(id)) {
+           user.setUserId(id); // Asegúrate de que se está configurando correctamente el ID
+           jpa.save(user);
+           return true;
+       }
+       return false;
+   }
 
-    @Override
-    public boolean deleteUser(int id) {
-        if (jpa.existsById(id)) {
-            jpa.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-	@Override
-	public User searchById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+   @Override
+   public boolean deleteUser(int id) {
+       if (jpa.existsById(id)) {
+           jpa.deleteById(id);
+           return true;
+       }
+       return false;
+   }
 }
