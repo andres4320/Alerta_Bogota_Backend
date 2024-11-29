@@ -25,26 +25,25 @@ public class UserService implements IUserService {
    public Usuario searchByIdUser(int id) {
        return dao.searchById(id);
    }
-
+   
    @Override
    public boolean postUser(Usuario usuario) {
        String encryptedPassword = passwordEncoder.encode(usuario.getUsePass());
-       usuario.setUsePass("{noop}" + encryptedPassword);
+       usuario.setUsePass(encryptedPassword);
        return dao.postUser(usuario);
    }
-
+   
    @Override
    public boolean updateUser(int id, Usuario usuario) {
        if (dao.searchById(id) != null) {
            usuario.setUsuarioId(id);
            
-           // Encriptar la nueva contraseña si se proporciona
            if (usuario.getUsePass() != null && !usuario.getUsePass().isEmpty()) {
                String encryptedPassword = passwordEncoder.encode(usuario.getUsePass());
-               usuario.setUsePass("{noop}" + encryptedPassword);
+               usuario.setUsePass(encryptedPassword);
            }
            
-           dao.updateUser(id, usuario);
+           dao.updateUser(id, usuario); 
            return true;
        }
        return false;
