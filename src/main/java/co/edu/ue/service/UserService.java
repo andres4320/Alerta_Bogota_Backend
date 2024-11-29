@@ -2,9 +2,10 @@ package co.edu.ue.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import co.edu.ue.dao.IUserDao;
-import co.edu.ue.entity.User;
+import co.edu.ue.entity.Usuario;
 
 @Service
 public class UserService implements IUserService {
@@ -12,24 +13,41 @@ public class UserService implements IUserService {
    @Autowired
    private IUserDao dao;
 
+   @Autowired
+   private BCryptPasswordEncoder passwordEncoder;
+
    @Override
-   public List<User> listAllUsers() {
+   public List<Usuario> listAllUsers() {
        return dao.listUsers();
    }
 
    @Override
-   public User searchByIdUser(int id) {
+   public Usuario searchByIdUser(int id) {
        return dao.searchById(id);
    }
 
    @Override
-   public boolean postUser(User user) {
-       return dao.postUser(user);
+   public boolean postUser(Usuario usuario) {
+       String encryptedPassword = passwordEncoder.encode(usuario.getUsePass());
+       usuario.setUsePass("{noop}" + encryptedPassword);
+       return dao.postUser(usuario);
    }
 
    @Override
-   public boolean updateUser(int id, User user) {
-       return dao.updateUser(id, user);
+   public boolean updateUser(int id, Usuario usuario) {
+       if (dao.searchById(id) != null) {
+           usuario.setUsuarioId(id);
+           
+           // Encriptar la nueva contraseña si se proporciona
+           if (usuario.getUsePass() != null && !usuario.getUsePass().isEmpty()) {
+               String encryptedPassword = passwordEncoder.encode(usuario.getUsePass());
+               usuario.setUsePass("{noop}" + encryptedPassword);
+           }
+           
+           dao.updateUser(id, usuario);
+           return true;
+       }
+       return false;
    }
 
    @Override

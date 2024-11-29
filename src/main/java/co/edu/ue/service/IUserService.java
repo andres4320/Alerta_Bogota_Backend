@@ -1,12 +1,12 @@
 package co.edu.ue.service;
 
 import java.util.List;
-import co.edu.ue.entity.User;
+import co.edu.ue.entity.Usuario;
 
 public interface IUserService {
-   List<User> listAllUsers();
-   User searchByIdUser(int id);
-   boolean postUser(User user);
-   boolean updateUser(int id, User user);
+   List<Usuario> listAllUsers();
+   Usuario searchByIdUser(int id);
+   boolean postUser(Usuario usuario);
+   boolean updateUser(int id, Usuario usuario);
    boolean deleteUser(int id);
 }

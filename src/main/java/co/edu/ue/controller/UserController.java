@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import co.edu.ue.entity.User;
+import co.edu.ue.entity.Usuario;
 import co.edu.ue.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +23,8 @@ public class UserController {
 
    @Operation(summary = "Registrar un nuevo usuario", description = "Permite registrar un nuevo usuario en la aplicación.")
    @PostMapping
-   public ResponseEntity<String> registerUser(@RequestBody User user) {
-       if (userService.postUser(user)) {
+   public ResponseEntity<String> registerUser(@RequestBody Usuario usuario) {
+       if (userService.postUser(usuario)) {
            return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.CREATED);
        }
        return new ResponseEntity<>("Error al registrar el usuario", HttpStatus.BAD_REQUEST);
@@ -32,15 +32,15 @@ public class UserController {
    
    @Operation(summary = "Listar todos los usuarios", description = "Devuelve una lista de todos los usuarios registrados.")
    @GetMapping
-   public ResponseEntity<List<User>> listAllUsers() {
-       List<User> users = userService.listAllUsers();
+   public ResponseEntity<List<Usuario>> listAllUsers() {
+       List<Usuario> users = userService.listAllUsers();
        return new ResponseEntity<>(users, HttpStatus.OK);
    }
    
    @Operation(summary = "Buscar usuario por ID", description = "Devuelve un usuario específico por su ID.")
    @GetMapping("/{id}")
-   public ResponseEntity<User> searchByIdUser(@PathVariable int id) {
-       User user = userService.searchByIdUser(id);
+   public ResponseEntity<Usuario> searchByIdUser(@PathVariable int id) {
+	   Usuario user = userService.searchByIdUser(id);
        if (user != null) {
            return new ResponseEntity<>(user, HttpStatus.OK);
        }
@@ -49,8 +49,8 @@ public class UserController {
    
    @Operation(summary = "Actualizar usuario", description = "Actualiza la información de un usuario existente.")
    @PutMapping("/{id}")
-   public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody User user) {
-       if (userService.updateUser(id, user)) {
+   public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody Usuario usuario) {
+       if (userService.updateUser(id, usuario)) {
            return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
        }
        return new ResponseEntity<>("Error al actualizar el usuario", HttpStatus.BAD_REQUEST);
