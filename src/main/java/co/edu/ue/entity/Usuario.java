@@ -46,13 +46,6 @@ public class Usuario implements Serializable {
 	@Column(name="use_pass")
 	private String usePass;
 
-	//bi-directional many-to-one association to AuditoriaIncidencia
-	@OneToMany(mappedBy="usuario")
-	private List<AuditoriaIncidencia> auditoriaIncidencias;
-
-	//bi-directional many-to-one association to Incidencia
-	@OneToMany(mappedBy="usuario")
-	private List<Incidencia> incidencias;
 
 	public Usuario() {
 	}
@@ -129,48 +122,15 @@ public class Usuario implements Serializable {
 		this.usePass = usePass;
 	}
 
-	public List<AuditoriaIncidencia> getAuditoriaIncidencias() {
-		return this.auditoriaIncidencias;
-	}
+	
 
-	public void setAuditoriaIncidencias(List<AuditoriaIncidencia> auditoriaIncidencias) {
-		this.auditoriaIncidencias = auditoriaIncidencias;
-	}
-
-	public AuditoriaIncidencia addAuditoriaIncidencia(AuditoriaIncidencia auditoriaIncidencia) {
-		getAuditoriaIncidencias().add(auditoriaIncidencia);
-		auditoriaIncidencia.setUsuario(this);
-
-		return auditoriaIncidencia;
-	}
-
-	public AuditoriaIncidencia removeAuditoriaIncidencia(AuditoriaIncidencia auditoriaIncidencia) {
-		getAuditoriaIncidencias().remove(auditoriaIncidencia);
-		auditoriaIncidencia.setUsuario(null);
-
-		return auditoriaIncidencia;
-	}
-
-	public List<Incidencia> getIncidencias() {
+/*	public List<Incidencia> getIncidencias() {
 		return this.incidencias;
 	}
 
 	public void setIncidencias(List<Incidencia> incidencias) {
 		this.incidencias = incidencias;
 	}
-
-	public Incidencia addIncidencia(Incidencia incidencia) {
-		getIncidencias().add(incidencia);
-		incidencia.setUsuario(this);
-
-		return incidencia;
-	}
-
-	public Incidencia removeIncidencia(Incidencia incidencia) {
-		getIncidencias().remove(incidencia);
-		incidencia.setUsuario(null);
-
-		return incidencia;
-	}
+*/
 
 }

@@ -27,13 +27,6 @@ public class CategoriasIncidencia implements Serializable {
 	@Column(name="nombre_categoria")
 	private String nombreCategoria;
 
-	//bi-directional many-to-one association to AuditoriaIncidencia
-	@OneToMany(mappedBy="categoriasIncidencia")
-	private List<AuditoriaIncidencia> auditoriaIncidencias;
-
-	//bi-directional many-to-one association to Incidencia
-	@OneToMany(mappedBy="categoriasIncidencia")
-	private List<Incidencia> incidencias;
 
 	public CategoriasIncidencia() {
 	}
@@ -62,48 +55,5 @@ public class CategoriasIncidencia implements Serializable {
 		this.nombreCategoria = nombreCategoria;
 	}
 
-	public List<AuditoriaIncidencia> getAuditoriaIncidencias() {
-		return this.auditoriaIncidencias;
-	}
-
-	public void setAuditoriaIncidencias(List<AuditoriaIncidencia> auditoriaIncidencias) {
-		this.auditoriaIncidencias = auditoriaIncidencias;
-	}
-
-	public AuditoriaIncidencia addAuditoriaIncidencia(AuditoriaIncidencia auditoriaIncidencia) {
-		getAuditoriaIncidencias().add(auditoriaIncidencia);
-		auditoriaIncidencia.setCategoriasIncidencia(this);
-
-		return auditoriaIncidencia;
-	}
-
-	public AuditoriaIncidencia removeAuditoriaIncidencia(AuditoriaIncidencia auditoriaIncidencia) {
-		getAuditoriaIncidencias().remove(auditoriaIncidencia);
-		auditoriaIncidencia.setCategoriasIncidencia(null);
-
-		return auditoriaIncidencia;
-	}
-
-	public List<Incidencia> getIncidencias() {
-		return this.incidencias;
-	}
-
-	public void setIncidencias(List<Incidencia> incidencias) {
-		this.incidencias = incidencias;
-	}
-
-	public Incidencia addIncidencia(Incidencia incidencia) {
-		getIncidencias().add(incidencia);
-		incidencia.setCategoriasIncidencia(this);
-
-		return incidencia;
-	}
-
-	public Incidencia removeIncidencia(Incidencia incidencia) {
-		getIncidencias().remove(incidencia);
-		incidencia.setCategoriasIncidencia(null);
-
-		return incidencia;
-	}
 
 }

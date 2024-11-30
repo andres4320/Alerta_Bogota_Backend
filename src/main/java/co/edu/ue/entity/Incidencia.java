@@ -36,9 +36,6 @@ public class Incidencia implements Serializable {
 
 	private BigDecimal longitud;
 
-	//bi-directional many-to-one association to AuditoriaIncidencia
-	@OneToMany(mappedBy="incidencia")
-	private List<AuditoriaIncidencia> auditoriaIncidencias;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
@@ -107,28 +104,6 @@ public class Incidencia implements Serializable {
 
 	public void setLongitud(BigDecimal longitud) {
 		this.longitud = longitud;
-	}
-
-	public List<AuditoriaIncidencia> getAuditoriaIncidencias() {
-		return this.auditoriaIncidencias;
-	}
-
-	public void setAuditoriaIncidencias(List<AuditoriaIncidencia> auditoriaIncidencias) {
-		this.auditoriaIncidencias = auditoriaIncidencias;
-	}
-
-	public AuditoriaIncidencia addAuditoriaIncidencia(AuditoriaIncidencia auditoriaIncidencia) {
-		getAuditoriaIncidencias().add(auditoriaIncidencia);
-		auditoriaIncidencia.setIncidencia(this);
-
-		return auditoriaIncidencia;
-	}
-
-	public AuditoriaIncidencia removeAuditoriaIncidencia(AuditoriaIncidencia auditoriaIncidencia) {
-		getAuditoriaIncidencias().remove(auditoriaIncidencia);
-		auditoriaIncidencia.setIncidencia(null);
-
-		return auditoriaIncidencia;
 	}
 
 	public Usuario getUsuario() {
