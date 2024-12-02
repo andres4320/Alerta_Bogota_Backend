@@ -18,64 +18,57 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.ue.util.Tools;
+import co.edu.ue.util.Tools; // Asegúrate de que esta importación esté presente
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import static co.edu.ue.util.Tools.*;
-
 @Tag(name = "Controlador para Login", description = "Este es el controlador para login utilizando JWT")
 @CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
-	
-	@Autowired
-	AuthenticationManager authManager;
 
-	public AuthController(AuthenticationManager authManager) {
-		super();
-		this.authManager = authManager;
-		
-	}
-	@Operation(summary = "Iniciar sesión en la Aplicacion", description = "El usuario se puede loguear para usar los métodos.")
-	@PostMapping(value = "login", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> login(@RequestParam("user") String user,
-	                                     @RequestParam("pwd") String pwd) {
-	    try {
-	        Authentication authentication = authManager.authenticate(
-	                new UsernamePasswordAuthenticationToken(user, pwd));
-	        System.out.println("COntroller Usuario autenticado: " + authentication.getName());
-	        System.out.println("COntroller Autoridades: " + authentication.getAuthorities());
-	        return new ResponseEntity<>(getToken(authentication), HttpStatus.OK);
-	    } catch (AuthenticationException ex) {
-	        ex.printStackTrace();
-	        System.out.println("Error de autenticación: " + ex.getMessage());
-	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-	    }
-	}
-	
-	private String getToken(Authentication authentication) {
-		// Asegúrate de que estás obteniendo las autoridades correctas
-	    List<String> authorities = authentication.getAuthorities().stream()
-	            .map(GrantedAuthority::getAuthority)
-	            .collect(Collectors.toList());
+    @Autowired
+    private AuthenticationManager authManager;
 
-	    // Imprimir las autoridades para depuración
-	    System.out.println("*****************COntroller***********************");
-	    System.out.println("Autoridades: " + authorities);
-	    System.out.println("****************************************");
-	    String token = Jwts.builder()
-	        .setIssuedAt(new Date(System.currentTimeMillis()))
-	        .setSubject(authentication.getName())
-	        .claim("authorities", authentication.getAuthorities().stream()
-	                .map(GrantedAuthority::getAuthority)
-	                .collect(Collectors.toList()))
-	        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-	        .signWith(Keys.hmacShaKeyFor(CLAVE.getBytes()))
-	        .compact();
-	    return token;
-	}
+    public AuthController(AuthenticationManager authManager) {
+        this.authManager = authManager;
+    }
 
+    @Operation(summary = "Iniciar sesión en la Aplicacion", description = "El usuario se debe loguear para usar los métodos.")
+    @PostMapping(value = "login", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> login(@RequestParam("user") String user,
+                                         @RequestParam("pwd") String pwd) {
+        try {
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user, pwd));
+            return new ResponseEntity<>(getToken(authentication), HttpStatus.OK);
+        } catch (AuthenticationException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+    
+    private String getToken(Authentication authentication) {
+        List<String> authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        
+     // Imprimir las autoridades para depuración
+        System.out.println("***************** Controller ***********************");
+        System.out.println("Autoridades: " + authorities); 
+        System.out.println("****************************************************");
+
+        // Generar el token JWT
+        String token = Jwts.builder()
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setSubject(authentication.getName())
+                .claim("authorities", authorities)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(Keys.hmacShaKeyFor(Tools.CLAVE.getBytes()))
+                .compact();
+
+        return token;
+    }
 }

@@ -19,73 +19,70 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import static co.edu.ue.util.Tools.*;
-
 public class AuthorizationFilterJWT extends BasicAuthenticationFilter {
 
 	public AuthorizationFilterJWT(AuthenticationManager authenticationManager) {
-        super(authenticationManager);		
+        super(authenticationManager);
     }
-	
-	@Override
-    protected void doFilterInternal(HttpServletRequest request, 
-            HttpServletResponse response, FilterChain chain)
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
             throws IOException, ServletException {
-        String header = request.getHeader(ENCABEZADO);
-        System.out.println("Encabezado: " + header);
-        if (header == null || !header.startsWith(PREFIJO_TOKEN)) {
+        String header = request.getHeader(Tools.ENCABEZADO);
+        if (header == null || !header.startsWith(Tools.PREFIJO_TOKEN)) {
             chain.doFilter(request, response);
-            return;
+            return; 
         }
-        //Obtenemos los datos del usuario a partir del Token
+
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(request, response);	
+        chain.doFilter(request, response);
     }
+    
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+        String token = request.getHeader(Tools.ENCABEZADO);
 
-	private UsernamePasswordAuthenticationToken getAuthentication
-	(HttpServletRequest request) {
-	    // Revisar que el token venga en la cabecera de la petición
-	    String token = request.getHeader(Tools.ENCABEZADO);
+        System.out.println("Token recibido: " + token);
 
-	    if (token != null) {
-	        try {
-	            // Procesa el token y recupera el usuario y los roles
-	            Claims claims = Jwts.parserBuilder()
-	                    .setSigningKey(Tools.CLAVE.getBytes())
-	                    .build()
-	                    .parseClaimsJws(token.replace(Tools.PREFIJO_TOKEN, ""))
-	                    .getBody();
+        if (token != null) {
+            try {
+                // Eliminar el prefijo del token
+                String jwt = token.replace(Tools.PREFIJO_TOKEN, "");
 
-	            String user = claims.getSubject();
-	            Date expiration = claims.getExpiration();
+                Claims claims = Jwts.parserBuilder()
+                        .setSigningKey(Tools.CLAVE.getBytes())
+                        .build()
+                        .parseClaimsJws(jwt)
+                        .getBody();
 
-	            // Validar que el token no haya expirado
-	            if (expiration.before(new Date())) {
-	                throw new JwtException("Token expirado");
-	            }
+                String user = claims.getSubject();
+                Date expiration = claims.getExpiration();
 
-	            // Obtener las autoridades desde el token
-	            List<String> authorities = (List<String>) claims.get("authorities");
+                System.out.println("Usuario extraído del token: " + user); 
+                System.out.println("Fecha de expiración del token: " + expiration);
 
-	            // Imprimir información del usuario y roles para depuración
-	            System.out.println("************** Usuario: " + user);
-	            System.out.println("Autoridades: " + authorities);
+                // Validar que el token no haya expirado
+                if (expiration.before(new Date())) {
+                    System.out.println("El token ha expirado.");
+                    throw new JwtException("Token expirado");
+                }
 
-	            // Crear el objeto de autenticación si el usuario es válido
-	            if (user != null) {
-	                return new UsernamePasswordAuthenticationToken(
-	                        user, 
-	                        null, 
-	                        authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
-	                );
-	            }
+                // Obtener las autoridades desde el token
+                List<String> authorities = (List<String>) claims.get("authorities");
+                System.out.println("Autoridades extraídas del token: " + authorities);
 
-	        } catch (JwtException e) {
-	            // Manejo de errores de token
-	            throw new RuntimeException("Token no válido: " + e.getMessage());
-	        }
-	    }
-	    return null;
-	}	
+                return new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                );
+            } catch (JwtException e) {
+                System.out.println("Error al validar el token: " + e.getMessage());
+                throw new RuntimeException("Token no válido: " + e.getMessage());
+            }
+        }
+        return null;
+    }
 }
