@@ -69,13 +69,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(aut -> aut
-                .requestMatchers(HttpMethod.GET, "/api/users").hasAuthority("ADMINISTRADOR")
-                .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAuthority("ADMINISTRADOR")
-                .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasAuthority("ADMINISTRADOR")
+            		//Endpoint de Usuarios 
+                    .requestMatchers(HttpMethod.GET, "/api/users/all-users").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.GET, "/api/users/search-user/{id}").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.PUT, "/api/users/update/{id}").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.DELETE, "/api/users/delete/{id}").hasAuthority("ADMINISTRADOR")
+                    //Demas Endpoints
                 .anyRequest().permitAll() // Permitir acceso a cualquier otra solicitud
             )
-            .authenticationManager(auth) // Usar el AuthenticationManager aquí
-            .addFilterBefore(new AuthorizationFilterJWT(auth), UsernamePasswordAuthenticationFilter.class); // Asegúrate de agregar tu filtro aquí
+            .authenticationManager(auth) // Usar el AuthenticationManager
+            .addFilterBefore(new AuthorizationFilterJWT(auth), UsernamePasswordAuthenticationFilter.class); 
 
         return http.build();
     }
