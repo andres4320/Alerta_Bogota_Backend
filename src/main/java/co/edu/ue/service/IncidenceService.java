@@ -1,5 +1,7 @@
 package co.edu.ue.service;
 
+
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,17 @@ public class IncidenceService implements IIncidenceService{
 		return dao.buscarPorLocalidad(localidad);
 	}
 
+    @Override
+	public List<Incidencia> buscarPorCategoriasIncidencia_Nombre(String nombreCategoria) {
+		return dao.buscarPorCategoriasIncidencia_Nombre(nombreCategoria); 
+	}
+
+	@Override
+	public List<Incidencia> buscarPorFecha(Date fecha) {
+		System.out.println("Fecha enviada al repositorio: " + fecha);
+		return dao.buscarPorFecha(fecha); 
+	}
+    
     @Override
     public boolean crearIncidencia(Incidencia incidencia) {
         return dao.crearIncidencia(incidencia);

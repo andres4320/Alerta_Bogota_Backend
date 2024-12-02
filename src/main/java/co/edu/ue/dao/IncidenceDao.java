@@ -1,5 +1,7 @@
 package co.edu.ue.dao;
 
+
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,16 @@ public class IncidenceDao implements IIncidenceDao {
     public List<Incidencia> buscarPorLocalidad(String localidad) {
         return jpa.findByLocalidad(localidad); 
     }
+    
+    @Override
+    public List<Incidencia> buscarPorCategoriasIncidencia_Nombre(String nombreCategoria) {
+        return jpa.findByCategoriasIncidencia_nombreCategoria(nombreCategoria); 
+    }
 
+    @Override
+    public List<Incidencia> buscarPorFecha(Date fecha) {
+        return jpa.findByFecha(fecha); 
+    }
 
     @Override
     public boolean crearIncidencia(Incidencia incidencia) {
@@ -36,19 +47,19 @@ public class IncidenceDao implements IIncidenceDao {
     
     @Override
     public boolean eliminarIncidencia(int id) {
-        if (jpa.existsById(id)) { // Verifica si la incidencia existe
-            jpa.deleteById(id); // Elimina la incidencia por ID
-            return true; // Retorna true si se elimina correctamente
+        if (jpa.existsById(id)) { 
+            jpa.deleteById(id); 
+            return true; 
         }
-        return false; // Retorna false si no existe
+        return false; 
     }
 
     @Override
     public boolean actualizarIncidencia(int id,Incidencia incidencia) {
-        if (jpa.existsById(incidencia.getIncidenciaId())) { // Verifica si la incidencia existe
-            Incidencia incidenciaEditar = jpa.findById(incidencia.getIncidenciaId()).get(); // Obtiene la incidencia existente
+        if (jpa.existsById(incidencia.getIncidenciaId())) { 
+            Incidencia incidenciaEditar = jpa.findById(incidencia.getIncidenciaId()).get(); 
 
-            // Actualiza los campos necesarios de la incidencia existente
+            
             incidenciaEditar.setDescripcion(incidencia.getDescripcion());
             incidenciaEditar.setDireccion(incidencia.getDireccion());
             incidenciaEditar.setFecha(incidencia.getFecha());
@@ -59,13 +70,13 @@ public class IncidenceDao implements IIncidenceDao {
             incidenciaEditar.setCategoriasIncidencia(incidencia.getCategoriasIncidencia());
 
             try {
-                jpa.save(incidenciaEditar); // Guarda la incidencia actualizada
-                return true; // Retorna true si se actualiza correctamente
+                jpa.save(incidenciaEditar); 
+                return true; 
             } catch (Exception e) {
-                return false; // Manejo básico de excepciones
+                return false; 
             }
         }
-        return false; // Retorna false si no existe la incidencia a actualizar
+        return false; 
     }
 
 

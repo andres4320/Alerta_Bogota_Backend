@@ -1,8 +1,12 @@
 package co.edu.ue.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ParseException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.ue.entity.CategoriasIncidencia;
 import co.edu.ue.entity.Incidencia;
 import co.edu.ue.service.IIncidenceService;
 import co.edu.ue.util.Tools;
@@ -53,6 +58,37 @@ public class IncidenceController {
         return new ResponseEntity<List<Incidencia>>(incidencias, headers, HttpStatus.OK);
     }
 	
+    @GetMapping(value = "consultarIncidenteporCategoria")
+    public ResponseEntity<?> getByCategoria(@RequestParam("categoria") String nombreCategoria) {
+        if (nombreCategoria == null || nombreCategoria.trim().isEmpty()) {
+            return new ResponseEntity<>("Error, la categoría no puede estar vacía.", HttpStatus.BAD_REQUEST);
+        }
+
+        // Busca las incidencias relacionadas con el nombre de la categoría
+        List<Incidencia> incidencias = service.buscarPorCategoriasIncidencia_Nombre(nombreCategoria);
+        if (incidencias.isEmpty()) {
+            return new ResponseEntity<>("No se encontraron incidencias para la categoría: " + nombreCategoria, HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cant_elements", String.valueOf(incidencias.size()));
+        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "consultarIncidenteporFecha")
+    public ResponseEntity<?> getByFecha(@RequestParam("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
+        java.sql.Date sqlDate = new java.sql.Date(fecha.getTime());
+        System.out.println("Fecha normalizada para búsqueda: " + sqlDate);
+    	List<Incidencia> incidencias = service.buscarPorFecha(sqlDate);
+        if (incidencias.isEmpty()) {
+            return new ResponseEntity<>("No se encontraron incidencias para la fecha: " + sqlDate, HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cant_elements", String.valueOf(incidencias.size()));
+        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
+    }    
+    
     // Crear nueva incidencia
     @PostMapping(value = "crearIncidencia")
     public ResponseEntity<String> postIncidencia(@RequestBody Incidencia incidencia) {
@@ -72,6 +108,8 @@ public class IncidenceController {
         }
         return new ResponseEntity<>("Error al intentar eliminar la incidencia", HttpStatus.CONFLICT);
     }
+    
+    
 
     // Actualizar incidencia
     @PutMapping(value = "actualizarIncidencia")
