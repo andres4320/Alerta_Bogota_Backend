@@ -12,7 +12,7 @@ import co.edu.ue.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Controlador para Usuarios", description = "Este es el controlador para manejar usuarios")
+@Tag(name = "API de Usuarios", description = "Este es el controlador para manejar usuarios")
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
@@ -22,7 +22,7 @@ public class UserController {
     private IUserService userService;
 
    @Operation(summary = "Registrar un nuevo usuario", description = "Permite registrar un nuevo usuario en la aplicación.")
-   @PostMapping
+   @PostMapping("/register")
    public ResponseEntity<String> registerUser(@RequestBody Usuario usuario) {
        if (userService.postUser(usuario)) {
            return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.CREATED);
@@ -31,14 +31,14 @@ public class UserController {
    }
    
    @Operation(summary = "Listar todos los usuarios", description = "Devuelve una lista de todos los usuarios registrados.")
-   @GetMapping
+   @GetMapping("/all-users")
    public ResponseEntity<List<Usuario>> listAllUsers() {
        List<Usuario> users = userService.listAllUsers();
        return new ResponseEntity<>(users, HttpStatus.OK);
    }
    
    @Operation(summary = "Buscar usuario por ID", description = "Devuelve un usuario específico por su ID.")
-   @GetMapping("/{id}")
+   @GetMapping("/search-user/{id}")
    public ResponseEntity<Usuario> searchByIdUser(@PathVariable int id) {
 	   Usuario user = userService.searchByIdUser(id);
        if (user != null) {
@@ -48,7 +48,7 @@ public class UserController {
    }
    
    @Operation(summary = "Actualizar usuario", description = "Actualiza la información de un usuario existente.")
-   @PutMapping("/{id}")
+   @PutMapping("/update/{id}")
    public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody Usuario usuario) {
        if (userService.updateUser(id, usuario)) {
            return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
