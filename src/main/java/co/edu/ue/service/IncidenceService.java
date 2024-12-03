@@ -17,38 +17,38 @@ public class IncidenceService implements IIncidenceService{
     IIncidenceDao dao;
 
     @Override
-    public List<Incidencia> listarTodasIncidencias() {
-        return dao.listarTodasIncidencias();
+    public List<Incidencia> listIncidences() {
+        return dao.listIncidences();
     }
     
-    public List<Incidencia> buscarPorLocalidad(String localidad) {
-		return dao.buscarPorLocalidad(localidad);
+    public List<Incidencia> searchByLocality(String localidad) {
+		return dao.searchByLocality(localidad);
 	}
 
     @Override
-	public List<Incidencia> buscarPorCategoriasIncidencia_Nombre(String nombreCategoria) {
-		return dao.buscarPorCategoriasIncidencia_Nombre(nombreCategoria); 
+	public List<Incidencia> searchByCategory(String nombreCategoria) {
+		return dao.searchByCategory(nombreCategoria); 
 	}
 
 	@Override
-	public List<Incidencia> buscarPorFecha(Date fecha) {
+	public List<Incidencia> searchByDate(Date fecha) {
 		System.out.println("Fecha enviada al repositorio: " + fecha);
-		return dao.buscarPorFecha(fecha); 
+		return dao.searchByDate(fecha); 
 	}
     
     @Override
-    public boolean crearIncidencia(Incidencia incidencia) {
-        return dao.crearIncidencia(incidencia);
+    public boolean postIncidence(Incidencia incidencia) {
+        return dao.postIncidence(incidencia);
     }
     
     @Override
-    public boolean actualizarIncidencia(int id, Incidencia incidencia) {
-        return dao.actualizarIncidencia(id, incidencia);
+    public boolean updateIncidence(int id, Incidencia incidencia) {
+        return dao.updateIncidence(id, incidencia);
     }
 
     @Override
-    public boolean eliminarIncidencia(int id) {
-        return dao.eliminarIncidencia(id);
+    public boolean deleteIncidence(int id) {
+        return dao.deleteIncidence(id);
     }
 
 

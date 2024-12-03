@@ -8,13 +8,13 @@ import java.util.List;
 import co.edu.ue.entity.Incidencia;
 
 public interface IIncidenceDao {
-    List<Incidencia> listarTodasIncidencias();
-    List<Incidencia> buscarPorLocalidad(String localidad);
-    List<Incidencia> buscarPorCategoriasIncidencia_Nombre(String nombreCategoria);
-    List<Incidencia> buscarPorFecha(Date fecha);
-    boolean crearIncidencia(Incidencia incidencia);
-    boolean actualizarIncidencia(int id, Incidencia incidencia);
-    boolean eliminarIncidencia(int id);
+    List<Incidencia> listIncidences();
+    List<Incidencia> searchByLocality(String localidad);
+    List<Incidencia> searchByCategory(String nombreCategoria);
+    List<Incidencia> searchByDate(Date fecha);
+    boolean postIncidence(Incidencia incidencia);
+    boolean updateIncidence(int id, Incidencia incidencia);
+    boolean deleteIncidence(int id);
 
 
 }

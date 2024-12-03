@@ -17,26 +17,26 @@ public class IncidenceDao implements IIncidenceDao {
     IIncidenceJpa jpa;
 
     @Override
-    public List<Incidencia> listarTodasIncidencias() {
+    public List<Incidencia> listIncidences() {
         return jpa.findAll();
     }
     @Override
-    public List<Incidencia> buscarPorLocalidad(String localidad) {
+    public List<Incidencia> searchByLocality(String localidad) {
         return jpa.findByLocalidad(localidad); 
     }
     
     @Override
-    public List<Incidencia> buscarPorCategoriasIncidencia_Nombre(String nombreCategoria) {
+    public List<Incidencia> searchByCategory(String nombreCategoria) {
         return jpa.findByCategoriasIncidencia_nombreCategoria(nombreCategoria); 
     }
 
     @Override
-    public List<Incidencia> buscarPorFecha(Date fecha) {
+    public List<Incidencia> searchByDate(Date fecha) {
         return jpa.findByFecha(fecha); 
     }
 
     @Override
-    public boolean crearIncidencia(Incidencia incidencia) {
+    public boolean postIncidence(Incidencia incidencia) {
         try {
             jpa.save(incidencia);
             return true;
@@ -46,7 +46,7 @@ public class IncidenceDao implements IIncidenceDao {
     }
     
     @Override
-    public boolean eliminarIncidencia(int id) {
+    public boolean deleteIncidence(int id) {
         if (jpa.existsById(id)) { 
             jpa.deleteById(id); 
             return true; 
@@ -55,7 +55,7 @@ public class IncidenceDao implements IIncidenceDao {
     }
 
     @Override
-    public boolean actualizarIncidencia(int id,Incidencia incidencia) {
+    public boolean updateIncidence(int id,Incidencia incidencia) {
         if (jpa.existsById(incidencia.getIncidenciaId())) { 
             Incidencia incidenciaEditar = jpa.findById(incidencia.getIncidenciaId()).get(); 
 
