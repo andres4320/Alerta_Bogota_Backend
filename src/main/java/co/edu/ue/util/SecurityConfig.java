@@ -82,7 +82,16 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/incidences/postIncidence").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.DELETE, "/api/incidences/deleteIncidence").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.PUT, "/api/incidences/updateIncidence").hasAuthority("USUARIO")
-                    
+                    //Endpoint de Categorias
+                    .requestMatchers(HttpMethod.GET, "/api/Category/ListCategory").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.GET, "/api/Category/searchByNameCategory").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.POST, "/api/Category/createCategory").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.PUT, "/api/Category/UpdateCategory").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.DELETE, "/api/Category/DeleteCategory").hasAuthority("ADMINISTRADOR") 
+                  //Endpoint de Favoritos
+                    .requestMatchers(HttpMethod.GET, "/api/Favorites/Listfavorites").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.POST, "/api/Favorites/CreateFavorites").hasAuthority("USUARIO") 
+                    .requestMatchers(HttpMethod.DELETE, "/api/Favorites/DeleteFavorites").hasAuthority("USUARIO")                   
                     //Demas Endpoints
                 .anyRequest().permitAll() // Permitir acceso a cualquier otra solicitud
             )
