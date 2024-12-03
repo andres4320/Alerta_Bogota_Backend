@@ -2,6 +2,8 @@ package co.edu.ue.util;
 
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import co.edu.ue.entity.CategoriasIncidencia;
 import co.edu.ue.entity.Incidencia;
 
 
@@ -32,6 +34,20 @@ public class Tools {
     }
     
     //Agregar demás expresiones....
+    //expresiones Categorias
+    public static final String RegexNombre = "^[\\p{L}0-9\\s]{1,100}$"; 
+    public static final String RegexDesCategoria = "^[\\p{L}\\p{N}\\s.,:\"'-]{1,255}$"; 
+	public static boolean verificarExpresionesCategorias(CategoriasIncidencia categoria) {
+		if (categoria == null) {
+            return false;
+        }
+
+        boolean descripcionCategoriaValida = Pattern.matches(RegexDesCategoria, categoria.getDescripcionCategoria());
+        boolean nombreValida = Pattern.matches(RegexNombre, categoria.getNombreCategoria());
+
+
+        return descripcionCategoriaValida && nombreValida ;
+	}
 	
 }
 
