@@ -38,9 +38,9 @@ public class UserController {
    }
    
    @Operation(summary = "Buscar usuario por ID", description = "Devuelve un usuario específico por su ID.")
-   @GetMapping("/search-user/{id}")
-   public ResponseEntity<Usuario> searchByIdUser(@PathVariable int id) {
-	   Usuario user = userService.searchByIdUser(id);
+   @PostMapping("/search-user")
+   public ResponseEntity<Usuario> searchByIdUser(@RequestBody Usuario usuario) {
+       Usuario user = userService.searchByIdUser(usuario.getUsuarioId());
        if (user != null) {
            return new ResponseEntity<>(user, HttpStatus.OK);
        }
@@ -48,18 +48,18 @@ public class UserController {
    }
    
    @Operation(summary = "Actualizar usuario", description = "Actualiza la información de un usuario existente.")
-   @PutMapping("/update/{id}")
-   public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody Usuario usuario) {
-       if (userService.updateUser(id, usuario)) {
+   @PutMapping("/update")
+   public ResponseEntity<String> updateUser(@RequestBody Usuario usuario) {
+       if (userService.updateUser(usuario.getUsuarioId(), usuario)) {
            return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
        }
        return new ResponseEntity<>("Error al actualizar el usuario", HttpStatus.BAD_REQUEST);
    }
    
    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario específico por su ID.")
-   @DeleteMapping("/{id}")
-   public ResponseEntity<String> deleteUser(@PathVariable int id) {
-       if (userService.deleteUser(id)) {
+   @DeleteMapping("/delete")
+   public ResponseEntity<String> deleteUser(@RequestBody Usuario usuario) {
+       if (userService.deleteUser(usuario.getUsuarioId())) {
            return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
        }
        return new ResponseEntity<>("Error al eliminar el usuario", HttpStatus.NOT_FOUND);

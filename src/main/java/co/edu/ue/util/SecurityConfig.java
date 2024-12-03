@@ -71,9 +71,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(aut -> aut
             		//Endpoint de Usuarios 
                     .requestMatchers(HttpMethod.GET, "/api/users/all-users").hasAuthority("ADMINISTRADOR") 
-                    .requestMatchers(HttpMethod.GET, "/api/users/search-user/{id}").hasAuthority("ADMINISTRADOR") 
-                    .requestMatchers(HttpMethod.PUT, "/api/users/update/{id}").hasAuthority("ADMINISTRADOR") 
-                    .requestMatchers(HttpMethod.DELETE, "/api/users/delete/{id}").hasAuthority("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET, "/api/users/search-user").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.PUT, "/api/users/update").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.DELETE, "/api/users/delete").hasAuthority("ADMINISTRADOR")
+                    
                     .requestMatchers(HttpMethod.GET, "/api/incidences/listIncidences").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByLocality").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByCategory").hasAuthority("USUARIO")
