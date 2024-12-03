@@ -74,7 +74,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/users/search-user").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.PUT, "/api/users/update").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.DELETE, "/api/users/delete").hasAuthority("ADMINISTRADOR")
-                    
+                    //Endpoint de Incidencias
                     .requestMatchers(HttpMethod.GET, "/api/incidences/listIncidences").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByLocality").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByCategory").hasAuthority("USUARIO")

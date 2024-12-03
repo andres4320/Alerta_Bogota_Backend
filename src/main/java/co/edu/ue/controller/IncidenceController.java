@@ -29,7 +29,6 @@ public class IncidenceController {
     @Autowired
     IIncidenceService service;
 
- 
     @GetMapping(value = "listIncidences")
     public ResponseEntity<List<Incidencia>> getAllIncidencias() {
         List<Incidencia> list = service.listIncidences();
@@ -60,7 +59,6 @@ public class IncidenceController {
         if (nombreCategoria == null || nombreCategoria.trim().isEmpty()) {
             return new ResponseEntity<>("Error, la categoría no puede estar vacía.", HttpStatus.BAD_REQUEST);
         }
-
    
         List<Incidencia> incidencias = service.searchByCategory(nombreCategoria);
         if (incidencias.isEmpty()) {
@@ -105,10 +103,7 @@ public class IncidenceController {
         }
         return new ResponseEntity<>("Error al intentar eliminar la incidencia", HttpStatus.CONFLICT);
     }
-    
-    
-
-   
+      
     @PutMapping(value = "updateIncidence")
     public ResponseEntity<String> updateIncidenciaById(@RequestBody Incidencia incidencia) {
         if (!Tools.verificarExpresionesIncidencias(incidencia)) {
