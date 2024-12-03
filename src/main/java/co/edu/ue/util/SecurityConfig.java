@@ -74,6 +74,14 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/users/search-user/{id}").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.PUT, "/api/users/update/{id}").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.DELETE, "/api/users/delete/{id}").hasAuthority("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/listIncidences").hasAuthority("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/searchByLocality").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/searchByCategory").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/searchByDate").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.POST, "/api/incidences/postIncidence").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.DELETE, "/api/incidences/deleteIncidence").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.PUT, "/api/incidences/updateIncidence").hasAuthority("USUARIO")
+                    
                     //Demas Endpoints
                 .anyRequest().permitAll() // Permitir acceso a cualquier otra solicitud
             )
