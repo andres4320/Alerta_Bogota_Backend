@@ -1,6 +1,8 @@
 package co.edu.ue.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,15 +22,17 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
-
-   @Operation(summary = "Registrar un nuevo usuario", description = "Permite registrar un nuevo usuario en la aplicación.")
-   @PostMapping("/register")
-   public ResponseEntity<String> registerUser(@RequestBody Usuario usuario) {
-       if (userService.postUser(usuario)) {
-           return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.CREATED);
-       }
-       return new ResponseEntity<>("Error al registrar el usuario", HttpStatus.BAD_REQUEST);
-   }
+    
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody Usuario usuario) {
+        Map<String, String> response = new HashMap<>();
+        if (userService.postUser(usuario)) {
+            response.put("message", "Usuario registrado exitosamente");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        }
+        response.put("message", "Error al registrar el usuario");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
    
    @Operation(summary = "Listar todos los usuarios", description = "Devuelve una lista de todos los usuarios registrados.")
    @GetMapping("/all-users")
