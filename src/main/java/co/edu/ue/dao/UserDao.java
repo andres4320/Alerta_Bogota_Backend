@@ -45,4 +45,9 @@ public class UserDao implements IUserDao {
         }
         return false;
     }
+
+    @Override
+    public Usuario findByUseEmail(String email) {
+        return jpa.findByUseEmail(email);
+    }
 }

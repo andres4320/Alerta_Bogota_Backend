@@ -53,4 +53,15 @@ public class UserService implements IUserService {
    public boolean deleteUser(int id) {
        return dao.deleteUser(id);
    }
+
+	@Override
+	public boolean doesEmailExist(String email) {
+		Usuario usuario = dao.findByUseEmail(email);
+	    return usuario != null;
+	}
+
+	@Override
+	public Usuario findByUseEmail(String email) {
+		return dao.findByUseEmail(email);
+	}
 }

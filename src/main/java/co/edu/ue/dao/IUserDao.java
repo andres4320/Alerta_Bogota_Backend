@@ -9,4 +9,5 @@ public interface IUserDao {
    boolean postUser(Usuario usuario);
    boolean updateUser(int id, Usuario usuario);
    boolean deleteUser(int id);
+   Usuario findByUseEmail(String email);
 }

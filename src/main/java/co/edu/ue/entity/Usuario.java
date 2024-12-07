@@ -121,16 +121,4 @@ public class Usuario implements Serializable {
 	public void setUsePass(String usePass) {
 		this.usePass = usePass;
 	}
-
-	
-
-/*	public List<Incidencia> getIncidencias() {
-		return this.incidencias;
-	}
-
-	public void setIncidencias(List<Incidencia> incidencias) {
-		this.incidencias = incidencias;
-	}
-*/
-
 }

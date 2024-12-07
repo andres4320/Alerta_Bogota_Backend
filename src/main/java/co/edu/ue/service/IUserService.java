@@ -9,4 +9,6 @@ public interface IUserService {
    boolean postUser(Usuario usuario);
    boolean updateUser(int id, Usuario usuario);
    boolean deleteUser(int id);
+   boolean doesEmailExist(String email);
+   Usuario findByUseEmail(String email);
 }
