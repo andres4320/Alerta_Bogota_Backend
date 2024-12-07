@@ -1,8 +1,10 @@
 package co.edu.ue.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import co.edu.ue.entity.Usuario;
 import co.edu.ue.service.IUserService;
+import co.edu.ue.util.Tools;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -62,10 +67,50 @@ public class UserController {
    
    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario específico por su ID.")
    @DeleteMapping("/delete")
-   public ResponseEntity<String> deleteUser(@RequestBody Usuario usuario) {
+   public ResponseEntity<Map<String, String>> deleteUser(@RequestBody Usuario usuario) {
+       Map<String, String> response = new HashMap<>();
        if (userService.deleteUser(usuario.getUsuarioId())) {
-           return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
+           response.put("message", "Usuario eliminado exitosamente");
+           return new ResponseEntity<>(response, HttpStatus.OK);
        }
-       return new ResponseEntity<>("Error al eliminar el usuario", HttpStatus.NOT_FOUND);
+       response.put("message", "Error al eliminar el usuario");
+       return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
    }
+   
+   @GetMapping("/check-email")
+   public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
+       boolean exists = userService.doesEmailExist(email);
+       return ResponseEntity.ok(exists);
+   }
+   
+   @GetMapping("/get-token")
+   public ResponseEntity<String> getTokenByEmail(@RequestParam String email) {
+       Usuario usuario = userService.findByUseEmail(email);
+       if (usuario != null) {
+           // Obtener el nombre del rol usando el rolId
+           String rolNombre = getRoleNameById(usuario.getRolId());
+
+           // Crear el token JWT
+           String token = Jwts.builder()
+                   .setSubject(usuario.getUseEmail())
+                   .claim("authorities", List.of(rolNombre))
+                   .setIssuedAt(new Date())
+                   .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                   .signWith(Keys.hmacShaKeyFor(Tools.CLAVE.getBytes()))
+                   .compact();
+           return ResponseEntity.ok(token);
+       }
+       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+   }
+   
+   private String getRoleNameById(int rolId) {
+	    switch (rolId) {
+	        case 1:
+	            return "USUARIO";
+	        case 2:
+	            return "ADMINISTRADOR";
+	        default:
+	            return "UNKNOWN";
+	    }
+	}
 }
