@@ -78,13 +78,13 @@ public class UserController {
    }
    
    @GetMapping("/check-email")
-   public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
+   public ResponseEntity<Boolean> checkEmailExists(@RequestParam("email") String email) {
        boolean exists = userService.doesEmailExist(email);
        return ResponseEntity.ok(exists);
    }
    
    @GetMapping("/get-token")
-   public ResponseEntity<String> getTokenByEmail(@RequestParam String email) {
+   public ResponseEntity<String> getTokenByEmail(@RequestParam("email") String email) {
        Usuario usuario = userService.findByUseEmail(email);
        if (usuario != null) {
            // Obtener el nombre del rol usando el rolId
