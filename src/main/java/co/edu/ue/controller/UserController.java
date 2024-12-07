@@ -62,10 +62,13 @@ public class UserController {
    
    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario específico por su ID.")
    @DeleteMapping("/delete")
-   public ResponseEntity<String> deleteUser(@RequestBody Usuario usuario) {
+   public ResponseEntity<Map<String, String>> deleteUser(@RequestBody Usuario usuario) {
+       Map<String, String> response = new HashMap<>();
        if (userService.deleteUser(usuario.getUsuarioId())) {
-           return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
+           response.put("message", "Usuario eliminado exitosamente");
+           return new ResponseEntity<>(response, HttpStatus.OK);
        }
-       return new ResponseEntity<>("Error al eliminar el usuario", HttpStatus.NOT_FOUND);
+       response.put("message", "Error al eliminar el usuario");
+       return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
    }
 }
