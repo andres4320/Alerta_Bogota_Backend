@@ -1,7 +1,9 @@
 package co.edu.ue.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -86,6 +88,27 @@ public class IncidenceController {
     
 
     @PostMapping(value = "postIncidence")
+    public ResponseEntity<Map<String, String>> postIncidencia(@RequestBody Incidencia incidencia) {
+        Map<String, String> response = new HashMap<>();
+
+        // Verificar las expresiones de la incidencia
+        if (!Tools.verificarExpresionesIncidencias(incidencia)) {
+            response.put("message", "Todos los campos deben ser diligenciados correctamente");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Intentar guardar la incidencia
+        if (service.postIncidence(incidencia)) {
+            response.put("message", "La incidencia ha sido creada con éxito");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        }
+
+        // Manejar el error interno
+        response.put("message", "Error interno al guardar la incidencia.");
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+    
+   /* @PostMapping(value = "postIncidence")
     public ResponseEntity<String> postIncidencia(@RequestBody Incidencia incidencia) {
         if (!Tools.verificarExpresionesIncidencias(incidencia)) {
             return new ResponseEntity<>("Todos los campos deben ser diligenciados correctamente", HttpStatus.BAD_REQUEST);
@@ -95,7 +118,7 @@ public class IncidenceController {
         }
         return new ResponseEntity<>("Error interno al guardar la incidencia.", HttpStatus.CONFLICT);
     }
-  
+*/  
     @DeleteMapping(value = "deleteIncidence")
     public ResponseEntity<String> deleteIncidenciaById(@RequestParam("id") int id) {
         if (service.deleteIncidence(id)) {
