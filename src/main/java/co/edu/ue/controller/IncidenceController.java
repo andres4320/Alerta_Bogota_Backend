@@ -137,5 +137,22 @@ public class IncidenceController {
         }
         return new ResponseEntity<>("Error interno al actualizar la incidencia", HttpStatus.CONFLICT);
     }
+    
+    @GetMapping(value = "countByLocality")
+    public ResponseEntity<List<Map<String, Long>>> getCountByLocality() {
+        List<Map<String, Long>> data = service.countIncidencesByLocality();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 
+    @GetMapping(value = "countByCategory")
+    public ResponseEntity<List<Map<String, Long>>> getCountByCategory() {
+        List<Map<String, Long>> data = service.countIncidencesByCategory();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "countByDate")
+    public ResponseEntity<List<Map<String, Long>>> getCountByDate() {
+        List<Map<String, Long>> data = service.countIncidencesByDate();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 }

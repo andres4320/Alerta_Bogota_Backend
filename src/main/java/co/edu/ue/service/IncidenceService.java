@@ -3,6 +3,7 @@ package co.edu.ue.service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,19 @@ public class IncidenceService implements IIncidenceService{
     public boolean deleteIncidence(int id) {
         return dao.deleteIncidence(id);
     }
+    
+    @Override
+    public List<Map<String, Long>> countIncidencesByLocality() {
+        return dao.countIncidencesByLocality();
+    }
 
+    @Override
+    public List<Map<String, Long>> countIncidencesByCategory() {
+        return dao.countIncidencesByCategory();
+    }
 
+    @Override
+    public List<Map<String, Long>> countIncidencesByDate() {
+        return dao.countIncidencesByDate();
+    }
 }

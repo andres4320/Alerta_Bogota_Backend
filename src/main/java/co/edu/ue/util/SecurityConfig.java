@@ -82,6 +82,9 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/incidences/postIncidence").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.DELETE, "/api/incidences/deleteIncidence").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.PUT, "/api/incidences/updateIncidence").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/countByLocality").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/countByCategory").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.GET, "/api/incidences/countByDate").hasAuthority("USUARIO")
                     //Endpoint de Categorias
                     .requestMatchers(HttpMethod.GET, "/api/Category/ListCategory").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.GET, "/api/Category/searchByNameCategory").hasAuthority("ADMINISTRADOR") 
