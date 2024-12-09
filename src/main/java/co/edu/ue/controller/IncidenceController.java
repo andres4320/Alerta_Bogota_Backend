@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.ue.entity.Incidencia;
 import co.edu.ue.service.IIncidenceService;
 import co.edu.ue.util.Tools;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "API de Incidencias", description = "Controlador para la gestión de incidencias")
@@ -156,7 +157,14 @@ public class IncidenceController {
         List<Map<String, Long>> data = service.countIncidencesByLocality();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-
+    
+    @Operation(summary = "Contar todas las incidencias", description = "Devuelve el número total de incidencias registradas.")
+    @GetMapping("/countIncidence")
+    public ResponseEntity<Long> getCountOfIncidencias() {
+        Long count = service.countIncidencias();
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+    
     @GetMapping(value = "countByCategory")
     public ResponseEntity<List<Map<String, Long>>> getCountByCategory() {
         List<Map<String, Long>> data = service.countIncidencesByCategory();

@@ -85,6 +85,11 @@ public class IncidenceDao implements IIncidenceDao {
         }
         return false; 
     }
+    
+    @Override
+    public Long countIncidences() {
+        return jpa.countIncidencias();
+    }
 
     @Override
     public List<Map<String, Long>> countIncidencesByLocality() {

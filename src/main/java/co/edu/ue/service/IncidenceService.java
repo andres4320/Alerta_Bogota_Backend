@@ -56,7 +56,11 @@ public class IncidenceService implements IIncidenceService{
         return dao.deleteIncidence(id);
     }
     
-
+    @Override
+    public Long countIncidencias() {
+        return dao.countIncidences();
+    }
+    
     @Override
     public List<Map<String, Long>> countIncidencesByLocality() {
         return dao.countIncidencesByLocality();

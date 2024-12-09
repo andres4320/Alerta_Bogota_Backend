@@ -17,11 +17,7 @@ public interface IIncidenceJpa extends JpaRepository<Incidencia, Integer>  {
 	//List<Incidencia> findByFecha(Date fecha);
     @Query("SELECT i FROM Incidencia i WHERE DATE(i.fecha) = :fecha")
     List<Incidencia> findByFecha(@Param("fecha") java.sql.Date fecha);
-
-    
     List<Incidencia> findByUsuario_usuarioId( int usuarioId);
-
-
     //Incidencias por localidad
     @Query("SELECT i.localidad AS localidad, COUNT(i) AS total FROM Incidencia i GROUP BY i.localidad")
     List<Map<String, Long>> countIncidencesByLocality();
@@ -31,5 +27,7 @@ public interface IIncidenceJpa extends JpaRepository<Incidencia, Integer>  {
     //Incidencias por fecha
     @Query("SELECT DATE(i.fecha) AS fecha, COUNT(i) AS total FROM Incidencia i GROUP BY DATE(i.fecha)")
     List<Map<String, Long>> countIncidencesByDate();
-
+    //Cantidad de Incidencias
+    @Query("SELECT COUNT(i) FROM Incidencia i")
+    Long countIncidencias();
 }

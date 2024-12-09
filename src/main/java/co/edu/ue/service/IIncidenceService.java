@@ -15,9 +15,8 @@ public interface IIncidenceService {    List<Incidencia> listIncidences();
 	boolean postIncidence(Incidencia incidencia);
 	boolean updateIncidence(int id, Incidencia incidencia);
 	boolean deleteIncidence(int id);
-
-
 	List<Map<String, Long>> countIncidencesByLocality();
     List<Map<String, Long>> countIncidencesByCategory();
     List<Map<String, Long>> countIncidencesByDate();
+	Long countIncidencias();
 }

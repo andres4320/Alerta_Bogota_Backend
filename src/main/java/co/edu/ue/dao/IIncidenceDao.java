@@ -19,4 +19,5 @@ public interface IIncidenceDao {
     List<Map<String, Long>> countIncidencesByLocality();
     List<Map<String, Long>> countIncidencesByCategory();
     List<Map<String, Long>> countIncidencesByDate();
+	Long countIncidences();
 }
