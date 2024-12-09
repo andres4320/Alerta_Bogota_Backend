@@ -16,5 +16,7 @@ public interface IIncidenceJpa extends JpaRepository<Incidencia, Integer>  {
 	//List<Incidencia> findByFecha(Date fecha);
     @Query("SELECT i FROM Incidencia i WHERE DATE(i.fecha) = :fecha")
     List<Incidencia> findByFecha(@Param("fecha") java.sql.Date fecha);
+    
+    List<Incidencia> findByUsuario_usuarioId( int usuarioId);
 
 }

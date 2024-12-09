@@ -35,7 +35,11 @@ public class IncidenceService implements IIncidenceService{
 		System.out.println("Fecha enviada al repositorio: " + fecha);
 		return dao.searchByDate(fecha); 
 	}
-    
+    @Override
+    public List<Incidencia> searchByUsuarioId(int usuarioId) {
+        return dao.searchByUsuarioId(usuarioId);
+    }
+
     @Override
     public boolean postIncidence(Incidencia incidencia) {
         return dao.postIncidence(incidencia);
@@ -50,6 +54,6 @@ public class IncidenceService implements IIncidenceService{
     public boolean deleteIncidence(int id) {
         return dao.deleteIncidence(id);
     }
-
+    
 
 }

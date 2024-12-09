@@ -10,8 +10,8 @@ public interface IIncidenceService {    List<Incidencia> listIncidences();
 	List<Incidencia> searchByLocality(String localidad);
 	List<Incidencia> searchByCategory(String nombreCategoria);
 	List<Incidencia> searchByDate(Date fecha);
+	List<Incidencia> searchByUsuarioId(int usuarioId);
 	boolean postIncidence(Incidencia incidencia);
 	boolean updateIncidence(int id, Incidencia incidencia);
 	boolean deleteIncidence(int id);
-
 }

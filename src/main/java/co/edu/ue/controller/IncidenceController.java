@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "API de Incidencias", description = "Controlador para la gestión de incidencias")
 @RestController
-@RequestMapping("/api/incidences")
+@RequestMapping(value = "/api/incidences")
 public class IncidenceController {
     @Autowired
     IIncidenceService service;
@@ -87,6 +87,19 @@ public class IncidenceController {
     }    
     
 
+
+    @GetMapping(value = "searchByUsuario")
+    public ResponseEntity<?> getByUsuario(@RequestParam("usuarioId") int usuarioId) {
+        List<Incidencia> incidencias = service.searchByUsuarioId(usuarioId);
+        if (incidencias.isEmpty()) {
+            return new ResponseEntity<>("No se encontraron incidencias para el usuario con ID: " + usuarioId, HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cant_elements", String.valueOf(incidencias.size()));
+        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
+    }
+    
     @PostMapping(value = "postIncidence")
     public ResponseEntity<Map<String, String>> postIncidencia(@RequestBody Incidencia incidencia) {
         Map<String, String> response = new HashMap<>();

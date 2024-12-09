@@ -36,6 +36,12 @@ public class IncidenceDao implements IIncidenceDao {
     }
 
     @Override
+    public List<Incidencia> searchByUsuarioId(int usuarioId) {
+        return jpa.findByUsuario_usuarioId(usuarioId);
+    }
+
+    
+    @Override
     public boolean postIncidence(Incidencia incidencia) {
         try {
             jpa.save(incidencia);
