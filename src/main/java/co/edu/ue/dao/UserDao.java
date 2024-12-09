@@ -1,6 +1,8 @@
 package co.edu.ue.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import co.edu.ue.entity.Usuario;
@@ -50,4 +52,14 @@ public class UserDao implements IUserDao {
     public Usuario findByUseEmail(String email) {
         return jpa.findByUseEmail(email);
     }
+
+	@Override
+	public List<Map<String, Long>> countUsersByRole() {
+		return jpa.countUsersByRole();
+	}
+
+	@Override
+	public List<Map<String, Long>> countUsersByRegistrationMonth() {
+		return jpa.countUsersByRegistrationMonth();
+	}
 }

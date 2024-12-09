@@ -113,4 +113,19 @@ public class UserController {
 	            return "UNKNOWN";
 	    }
 	}
+   
+   @Operation(summary = "Obtener estadísticas por roles", description = "Devuelve el número de usuarios agrupados por roles.")
+   @GetMapping("/stats/roles")
+   public ResponseEntity<List<Map<String, Long>>> getStatsByRoles() {
+       List<Map<String, Long>> stats = userService.countUsersByRole();
+       return new ResponseEntity<>(stats, HttpStatus.OK);
+   }
+
+   @Operation(summary = "Obtener estadísticas por mes de registro", description = "Devuelve el número de usuarios agrupados por mes de registro.")
+   @GetMapping("/stats/registration-months")
+   public ResponseEntity<List<Map<String, Long>>> getStatsByRegistrationMonth() {
+       List<Map<String, Long>> stats = userService.countUsersByRegistrationMonth();
+       return new ResponseEntity<>(stats, HttpStatus.OK);
+   }
+
 }

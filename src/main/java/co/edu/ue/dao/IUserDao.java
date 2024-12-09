@@ -1,6 +1,8 @@
 package co.edu.ue.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import co.edu.ue.entity.Usuario;
 
 public interface IUserDao {
@@ -10,4 +12,6 @@ public interface IUserDao {
    boolean updateUser(int id, Usuario usuario);
    boolean deleteUser(int id);
    Usuario findByUseEmail(String email);
+List<Map<String, Long>> countUsersByRole();
+List<Map<String, Long>> countUsersByRegistrationMonth();
 }

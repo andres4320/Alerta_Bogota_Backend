@@ -1,6 +1,8 @@
 package co.edu.ue.service;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,5 +65,15 @@ public class UserService implements IUserService {
 	@Override
 	public Usuario findByUseEmail(String email) {
 		return dao.findByUseEmail(email);
+	}
+
+	@Override
+	public List<Map<String, Long>> countUsersByRole() {
+		return dao.countUsersByRole();
+	}
+
+	@Override
+	public List<Map<String, Long>> countUsersByRegistrationMonth() {
+		return dao.countUsersByRegistrationMonth();
 	}
 }
