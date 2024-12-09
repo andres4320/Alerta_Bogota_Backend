@@ -88,7 +88,7 @@ public class SecurityConfig {
                     //Endpoint de Categorias
                     .requestMatchers(HttpMethod.GET, "/api/Category/ListCategory").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.GET, "/api/Category/searchByNameCategory").hasAuthority("ADMINISTRADOR") 
-                    .requestMatchers(HttpMethod.POST, "/api/Category/createCategory").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.POST, "/api/Category/createCategory").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.PUT, "/api/Category/UpdateCategory").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.DELETE, "/api/Category/DeleteCategory").hasAuthority("ADMINISTRADOR") 
                   //Endpoint de Favoritos
