@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "API de Usuarios", description = "Este es el controlador para manejar usuarios")
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(value = "/api/users")
 public class UserController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class UserController {
     }
    
    @Operation(summary = "Listar todos los usuarios", description = "Devuelve una lista de todos los usuarios registrados.")
-   @GetMapping("/all-users")
+   @GetMapping(value = "/all-users")
    public ResponseEntity<List<Usuario>> listAllUsers() {
        List<Usuario> users = userService.listAllUsers();
        return new ResponseEntity<>(users, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class UserController {
    }
    
    @Operation(summary = "Actualizar usuario", description = "Actualiza la información de un usuario existente.")
-   @PutMapping("/update")
+   @PutMapping(value = "/update")
    public ResponseEntity<String> updateUser(@RequestBody Usuario usuario) {
        if (userService.updateUser(usuario.getUsuarioId(), usuario)) {
            return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
@@ -66,7 +66,7 @@ public class UserController {
    }
    
    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario específico por su ID.")
-   @DeleteMapping("/delete")
+   @DeleteMapping(value = "/delete")
    public ResponseEntity<Map<String, String>> deleteUser(@RequestBody Usuario usuario) {
        Map<String, String> response = new HashMap<>();
        if (userService.deleteUser(usuario.getUsuarioId())) {
