@@ -3,6 +3,7 @@ package co.edu.ue.dao;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -85,5 +86,18 @@ public class IncidenceDao implements IIncidenceDao {
         return false; 
     }
 
+    @Override
+    public List<Map<String, Long>> countIncidencesByLocality() {
+        return jpa.countIncidencesByLocality();
+    }
 
+    @Override
+    public List<Map<String, Long>> countIncidencesByCategory() {
+        return jpa.countIncidencesByCategory();
+    }
+
+    @Override
+    public List<Map<String, Long>> countIncidencesByDate() {
+        return jpa.countIncidencesByDate();
+    }
 }
