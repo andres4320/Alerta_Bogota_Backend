@@ -1,6 +1,8 @@
 package co.edu.ue.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import co.edu.ue.entity.CategoriasIncidencia;
 import co.edu.ue.service.ICategoriaService;
 import co.edu.ue.util.Tools; // Asumiendo que esta clase sigue siendo útil
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "API de Categorias", description = "Controlador para la gestión de Categorias")
@@ -77,5 +80,19 @@ public class CategoriaController {
            return new ResponseEntity<>("Categoría actualizada correctamente", HttpStatus.OK);
        }
        return new ResponseEntity<>("Error interno al actualizar la categoría", HttpStatus.CONFLICT);
+   }
+   
+   @Operation(summary = "Obtener cantidad de categorías registradas", description = "Devuelve el número total de categorías registradas.")
+   @GetMapping("/countCategories")
+   public ResponseEntity<Long> getCategoryCount() {
+       Long count = service.countCategories();
+       return new ResponseEntity<>(count, HttpStatus.OK);
+   }
+
+   @Operation(summary = "Obtener categorías más usadas", description = "Devuelve una lista de las categorías más utilizadas.")
+   @GetMapping("/mostUsedCategories")
+   public ResponseEntity<List<Map<String, Long>>> getMostUsedCategories() {
+       List<Map<String, Long>> stats = service.countMostUsedCategories();
+       return new ResponseEntity<>(stats, HttpStatus.OK);
    }
 }

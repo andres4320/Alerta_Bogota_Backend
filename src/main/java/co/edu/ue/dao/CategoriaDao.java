@@ -1,6 +1,8 @@
 package co.edu.ue.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import co.edu.ue.entity.CategoriasIncidencia;
@@ -59,4 +61,14 @@ public class CategoriaDao implements ICategoriaDao {
         }
         return false; // Retorna false si no existe
     }
+
+    @Override
+	public Long countCategories() {
+		return jpa.countCategories();
+	}
+
+	@Override
+	public List<Map<String, Long>> countMostUsedCategories() {
+		return jpa.countMostUsedCategories();
+	}
 }

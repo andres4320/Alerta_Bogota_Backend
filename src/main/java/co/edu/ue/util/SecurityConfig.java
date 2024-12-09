@@ -74,6 +74,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/users/search-user").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.PUT, "/api/users/update").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.DELETE, "/api/users/delete").hasAuthority("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET, "/api/users/count-users-roles").hasAuthority("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET, "/api/users/registration-months").hasAuthority("ADMINISTRADOR")
                     //Endpoint de Incidencias
                     .requestMatchers(HttpMethod.GET, "/api/incidences/listIncidences").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByLocality").hasAuthority("USUARIO")
@@ -85,13 +87,15 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/incidences/countByLocality").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/countByCategory").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/countByDate").hasAuthority("USUARIO")
-                    //Endpoint de Categorias
+                    //Endpoint de Categorias 
                     .requestMatchers(HttpMethod.GET, "/api/Category/ListCategory").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.GET, "/api/Category/searchByNameCategory").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.POST, "/api/Category/createCategory").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.PUT, "/api/Category/UpdateCategory").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.DELETE, "/api/Category/DeleteCategory").hasAuthority("ADMINISTRADOR") 
-                  //Endpoint de Favoritos
+                    .requestMatchers(HttpMethod.GET, "/api/Category/countCategories").hasAuthority("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET, "/api/Category/mostUsedCategories").hasAuthority("ADMINISTRADOR")
+                    //Endpoint de Favoritos
                     .requestMatchers(HttpMethod.GET, "/api/Favorites/Listfavorites").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.POST, "/api/Favorites/CreateFavorites").hasAuthority("USUARIO") 
                     .requestMatchers(HttpMethod.DELETE, "/api/Favorites/DeleteFavorites").hasAuthority("USUARIO")                   

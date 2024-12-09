@@ -1,6 +1,8 @@
 package co.edu.ue.service;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import co.edu.ue.dao.ICategoriaDao;
@@ -9,8 +11,8 @@ import co.edu.ue.entity.CategoriasIncidencia;
 @Service
 public class CategoriaService implements ICategoriaService {
     
-    @Autowired
-    ICategoriaDao dao;
+	@Autowired
+	private ICategoriaDao dao;
 
     @Override
     public List<CategoriasIncidencia> listarTodasCategorias() {
@@ -36,4 +38,14 @@ public class CategoriaService implements ICategoriaService {
     public boolean eliminarCategoria(int id) {
         return dao.eliminarCategoria(id);
     }
+
+	@Override
+	public Long countCategories() {
+		return dao.countCategories();
+	}
+
+	@Override
+	public List<Map<String, Long>> countMostUsedCategories() {
+		return dao.countMostUsedCategories();
+	}
 }
