@@ -29,6 +29,7 @@ public class UserController {
     @Autowired
     private IUserService userService;
     
+    @Operation(summary = "Registrar un usuario", description = "Crea una nueva cuenta en el sistema con nombres, correo y contraseña.")
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody Usuario usuario) {
         Map<String, String> errores = Tools.verificarExpresionesUsuario(usuario);
@@ -91,12 +92,14 @@ public class UserController {
        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
    }
    
+   @Operation(summary = "Verificar existencia de correo electrónico", description = "Verifica si un correo electrónico ya está registrado en el sistema. Retorna `true` si existe y `false` si no.")
    @GetMapping("/check-email")
    public ResponseEntity<Boolean> checkEmailExists(@RequestParam("email") String email) {
        boolean exists = userService.doesEmailExist(email);
        return ResponseEntity.ok(exists);
    }
    
+   @Operation(summary = "Obtener token JWT por correo electrónico", description = "Genera y devuelve un token JWT para un usuario basado en su correo electrónico. Incluye el rol del usuario en el token. Responde con un estado 404 si el usuario no se encuentra.")
    @GetMapping("/get-token")
    public ResponseEntity<String> getTokenByEmail(@RequestParam("email") String email) {
        Usuario usuario = userService.findByUseEmail(email);
