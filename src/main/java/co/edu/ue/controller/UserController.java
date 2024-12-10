@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +31,24 @@ public class UserController {
     
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody Usuario usuario) {
-        Map<String, String> response = new HashMap<>();
-        if (userService.postUser(usuario)) {
-            response.put("message", "Usuario registrado exitosamente");
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        Map<String, String> errores = Tools.verificarExpresionesUsuario(usuario);
+        if (!errores.isEmpty()) {
+            return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
         }
+
+        try {
+            if (userService.postUser(usuario)) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Usuario registrado exitosamente");
+                return new ResponseEntity<>(response, HttpStatus.CREATED);
+            }
+        } catch (DataIntegrityViolationException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("useEmail", "El correo electrónico ya está registrado. Por favor, utiliza otro.");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
+
+        Map<String, String> response = new HashMap<>();
         response.put("message", "Error al registrar el usuario");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
