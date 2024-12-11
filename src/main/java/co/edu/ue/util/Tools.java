@@ -18,9 +18,9 @@ public class Tools {
 	public static final String PREFIJO_TOKEN ="Bearer ";
 	
 	//Expresiones regulares para Incidencias
-    public static final String RegexLocalidad = "^[\\p{L}0-9\\s]{1,100}$"; 
-    public static final String RegexDescripcion = "^[\\p{L}\\p{N}\\s.,:\"'-]{1,255}$"; 
-    public static final String RegexDireccion = "^[\\p{L}0-9\\s.,-]{1,255}$"; 	
+	public static final String RegexLocalidad = "^[\\p{L}0-9\\s]{1,100}$";
+	public static final String RegexDescripcion = "^[\\p{L}\\p{N}\\s.,:\"'\\-@#*]{1,255}$";
+	public static final String RegexDireccion = "^[\\p{L}0-9\\s.,-@#*]{1,255}$";
 	
     public static boolean verificarExpresionesIncidencias(Incidencia incidencia) {
         if (incidencia == null) {

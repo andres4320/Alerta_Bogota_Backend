@@ -66,10 +66,10 @@ public class IncidenceService implements IIncidenceService{
         return dao.countIncidencesByLocality();
     }
 
-    @Override
+ /*   @Override
     public List<Map<String, Long>> countIncidencesByCategory() {
         return dao.countIncidencesByCategory();
-    }
+    }*/
 
     @Override
     public List<Map<String, Long>> countIncidencesByDate() {

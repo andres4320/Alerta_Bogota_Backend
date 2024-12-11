@@ -1,7 +1,9 @@
 package co.edu.ue.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.ue.util.Tools; // Asegúrate de que esta importación esté presente
+import co.edu.ue.entity.Usuario;
+import co.edu.ue.service.IUserService;
+import co.edu.ue.util.Tools; 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,21 +36,41 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authManager;
 
+    @Autowired
+    private IUserService userService;
+
     public AuthController(AuthenticationManager authManager) {
         this.authManager = authManager;
     }
 
     @Operation(summary = "Iniciar sesión en la Aplicacion", description = "El usuario se debe loguear para usar los métodos.")
-    @PostMapping(value = "login", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> login(@RequestParam("user") String user,
+    @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> login(@RequestParam("user") String user,
                                          @RequestParam("pwd") String pwd) {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user, pwd));
-            return new ResponseEntity<>(getToken(authentication), HttpStatus.OK);
+            
+            // Obtener el usuario autenticado
+            String email = user; // Asumiendo que 'user' es el email
+            Usuario usuario = userService.findByUseEmail(email);
+
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado");
+            }
+
+            // Generar el token
+            String token = getToken(authentication);
+            
+            // Crear un objeto de respuesta que incluya el token y los datos del usuario
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("usuario", usuario); // Incluye todos los datos del usuario
+            
+            return ResponseEntity.ok(response);
         } catch (AuthenticationException ex) {
             ex.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
     

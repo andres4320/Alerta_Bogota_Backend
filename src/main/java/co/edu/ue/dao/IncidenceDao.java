@@ -28,7 +28,7 @@ public class IncidenceDao implements IIncidenceDao {
     
     @Override
     public List<Incidencia> searchByCategory(String nombreCategoria) {
-        return jpa.findByCategoriasIncidencia_nombreCategoria(nombreCategoria); 
+        return jpa.findByCategoriaNombre(nombreCategoria); 
     }
 
     @Override
@@ -38,7 +38,7 @@ public class IncidenceDao implements IIncidenceDao {
 
     @Override
     public List<Incidencia> searchByUsuarioId(int usuarioId) {
-        return jpa.findByUsuario_usuarioId(usuarioId);
+        return jpa.findByUsuarioId(usuarioId);
     }
 
     
@@ -73,8 +73,8 @@ public class IncidenceDao implements IIncidenceDao {
             incidenciaEditar.setLatitud(incidencia.getLatitud());
             incidenciaEditar.setLocalidad(incidencia.getLocalidad());
             incidenciaEditar.setLongitud(incidencia.getLongitud());
-            incidenciaEditar.setUsuario(incidencia.getUsuario());
-            incidenciaEditar.setCategoriasIncidencia(incidencia.getCategoriasIncidencia());
+            incidenciaEditar.setUsuarioId(incidencia.getUsuarioId());
+            incidenciaEditar.setCategoriaId(incidencia.getCategoriaId());
 
             try {
                 jpa.save(incidenciaEditar); 
@@ -96,10 +96,10 @@ public class IncidenceDao implements IIncidenceDao {
         return jpa.countIncidencesByLocality();
     }
 
-    @Override
+  /*  @Override
     public List<Map<String, Long>> countIncidencesByCategory() {
         return jpa.countIncidencesByCategory();
-    }
+    }*/
 
     @Override
     public List<Map<String, Long>> countIncidencesByDate() {

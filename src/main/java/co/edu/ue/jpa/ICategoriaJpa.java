@@ -12,6 +12,6 @@ public interface ICategoriaJpa extends JpaRepository<CategoriasIncidencia, Integ
     List<CategoriasIncidencia> findByNombreCategoria(String nombreCategoria);
     @Query("SELECT COUNT(c) FROM CategoriasIncidencia c")
     Long countCategories();
-    @Query("SELECT c.nombreCategoria AS nombre, COUNT(i) AS total FROM Incidencia i JOIN i.categoriasIncidencia c GROUP BY c.nombreCategoria ORDER BY total DESC")
+    @Query(value = "SELECT i FROM Incidencia i WHERE i.categoriaId = (SELECT c.categoriaId FROM CategoriasIncidencia c WHERE c.nombreCategoria = :nombreCategoria)")
     List<Map<String, Long>> countMostUsedCategories();
 }

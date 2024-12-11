@@ -142,14 +142,24 @@ public class IncidenceController {
     }
       
     @PutMapping(value = "updateIncidence")
-    public ResponseEntity<String> updateIncidenciaById(@RequestBody Incidencia incidencia) {
+    public ResponseEntity<Map<String, String>> updateIncidenciaById(@RequestBody Incidencia incidencia) {
+        Map<String, String> response = new HashMap<>();
+
+        // Verificar las expresiones de la incidencia
         if (!Tools.verificarExpresionesIncidencias(incidencia)) {
-            return new ResponseEntity<>("Error, los datos deben estar correctamente diligenciados.", HttpStatus.BAD_REQUEST);
+            response.put("message", "Error, los datos deben estar correctamente diligenciados.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+
+        // Intentar actualizar la incidencia
         if (service.updateIncidence(incidencia.getIncidenciaId(), incidencia)) {
-            return new ResponseEntity<>("Incidencia actualizada correctamente", HttpStatus.OK);
+            response.put("message", "Incidencia actualizada correctamente");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Error interno al actualizar la incidencia", HttpStatus.CONFLICT);
+
+        // Manejar el error interno
+        response.put("message", "Error interno al actualizar la incidencia");
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
     
     @GetMapping(value = "countByLocality")
@@ -165,11 +175,11 @@ public class IncidenceController {
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
     
-    @GetMapping(value = "countByCategory")
+  /*  @GetMapping(value = "countByCategory")
     public ResponseEntity<List<Map<String, Long>>> getCountByCategory() {
         List<Map<String, Long>> data = service.countIncidencesByCategory();
         return new ResponseEntity<>(data, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping(value = "countByDate")
     public ResponseEntity<List<Map<String, Long>>> getCountByDate() {
