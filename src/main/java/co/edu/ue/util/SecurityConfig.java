@@ -71,18 +71,19 @@ public class SecurityConfig {
             .authorizeHttpRequests(aut -> aut
             		//Endpoint de Usuarios 
                     .requestMatchers(HttpMethod.GET, "/api/users/all-users").hasAuthority("ADMINISTRADOR") 
-                    .requestMatchers(HttpMethod.GET, "/api/users/search-user").hasAuthority("ADMINISTRADOR") 
+                    .requestMatchers(HttpMethod.GET, "/api/users/search-user").hasAnyAuthority("USUARIO","ADMINISTRADOR")
                     .requestMatchers(HttpMethod.PUT, "/api/users/update").hasAuthority("ADMINISTRADOR") 
                     .requestMatchers(HttpMethod.DELETE, "/api/users/delete").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/users/count-users-roles").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/users/registration-months").hasAuthority("ADMINISTRADOR")
+                    
                     //Endpoint de Incidencias
                     .requestMatchers(HttpMethod.GET, "/api/incidences/listIncidences").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByLocality").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByCategory").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/searchByDate").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.POST, "/api/incidences/postIncidence").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/api/incidences/deleteIncidence").hasAuthority("USUARIO")
+                    .requestMatchers(HttpMethod.DELETE, "/api/incidences/deleteIncidence").hasAnyAuthority("USUARIO","ADMINISTRADOR")
                     .requestMatchers(HttpMethod.PUT, "/api/incidences/updateIncidence").hasAuthority("USUARIO")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/countIncidence").hasAuthority("ADMINISTRADOR")
                     .requestMatchers(HttpMethod.GET, "/api/incidences/countByLocality").hasAuthority("USUARIO")
