@@ -35,17 +35,16 @@ public class Incidencia implements Serializable {
 	private String localidad;
 
 	private BigDecimal longitud;
+	
+
+    @Column(name = "usuario_id")
+    private int usuarioId;
 
 
-	//bi-directional many-to-one association to Usuario
-	@ManyToOne
-	@JoinColumn(name="usuario_id")
-	private Usuario usuario;
+	@Column(name = "categoria_id")
+    private int categoriaId;
 
-	//bi-directional many-to-one association to CategoriasIncidencia
-	@ManyToOne
-	@JoinColumn(name="categoria_id")
-	private CategoriasIncidencia categoriasIncidencia;
+
 
 	public Incidencia() {
 	}
@@ -106,20 +105,20 @@ public class Incidencia implements Serializable {
 		this.longitud = longitud;
 	}
 
-	public Usuario getUsuario() {
-		return this.usuario;
+	public int getUsuarioId() {
+		return usuarioId;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsuarioId(int usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+    public int getCategoriaId() {
+		return categoriaId;
 	}
 
-	public CategoriasIncidencia getCategoriasIncidencia() {
-		return this.categoriasIncidencia;
+	public void setCategoriaId(int cayegoriaId) {
+		this.categoriaId = cayegoriaId;
 	}
 
-	public void setCategoriasIncidencia(CategoriasIncidencia categoriasIncidencia) {
-		this.categoriasIncidencia = categoriasIncidencia;
-	}
 
 }

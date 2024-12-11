@@ -56,21 +56,6 @@ public class IncidenceController {
         return new ResponseEntity<List<Incidencia>>(incidencias, headers, HttpStatus.OK);
     }
 	
-    @GetMapping(value = "searchByCategory")
-    public ResponseEntity<?> getByCategoria(@RequestParam("categoria") String nombreCategoria) {
-        if (nombreCategoria == null || nombreCategoria.trim().isEmpty()) {
-            return new ResponseEntity<>("Error, la categoría no puede estar vacía.", HttpStatus.BAD_REQUEST);
-        }
-   
-        List<Incidencia> incidencias = service.searchByCategory(nombreCategoria);
-        if (incidencias.isEmpty()) {
-            return new ResponseEntity<>("No se encontraron incidencias para la categoría: " + nombreCategoria, HttpStatus.NOT_FOUND);
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("cant_elements", String.valueOf(incidencias.size()));
-        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
-    }
 
     @GetMapping(value = "searchByDate")
     public ResponseEntity<?> getByFecha(@RequestParam("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
@@ -88,17 +73,8 @@ public class IncidenceController {
     
 
 
-    @GetMapping(value = "searchByUsuario")
-    public ResponseEntity<?> getByUsuario(@RequestParam("usuarioId") int usuarioId) {
-        List<Incidencia> incidencias = service.searchByUsuarioId(usuarioId);
-        if (incidencias.isEmpty()) {
-            return new ResponseEntity<>("No se encontraron incidencias para el usuario con ID: " + usuarioId, HttpStatus.NOT_FOUND);
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("cant_elements", String.valueOf(incidencias.size()));
-        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
-    }
+    
+    
     
     @PostMapping(value = "postIncidence")
     public ResponseEntity<Map<String, String>> postIncidencia(@RequestBody Incidencia incidencia) {
@@ -120,8 +96,9 @@ public class IncidenceController {
         response.put("message", "Error interno al guardar la incidencia.");
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+
     
-   /* @PostMapping(value = "postIncidence")
+  /* @PostMapping(value = "postIncidence")
     public ResponseEntity<String> postIncidencia(@RequestBody Incidencia incidencia) {
         if (!Tools.verificarExpresionesIncidencias(incidencia)) {
             return new ResponseEntity<>("Todos los campos deben ser diligenciados correctamente", HttpStatus.BAD_REQUEST);
@@ -130,8 +107,12 @@ public class IncidenceController {
             return new ResponseEntity<>("La incidencia ha sido creada con éxito", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Error interno al guardar la incidencia.", HttpStatus.CONFLICT);
-    }
-*/  
+    }*/
+
+    
+    
+    
+    
     @DeleteMapping(value = "deleteIncidence")
     public ResponseEntity<String> deleteIncidenciaById(@RequestParam("id") int id) {
         if (service.deleteIncidence(id)) {
@@ -141,23 +122,62 @@ public class IncidenceController {
     }
       
     @PutMapping(value = "updateIncidence")
-    public ResponseEntity<String> updateIncidenciaById(@RequestBody Incidencia incidencia) {
+    public ResponseEntity<Map<String, String>> updateIncidenciaById(@RequestBody Incidencia incidencia) {
+        Map<String, String> response = new HashMap<>();
+        
+        // Validar los datos de la incidencia
         if (!Tools.verificarExpresionesIncidencias(incidencia)) {
-            return new ResponseEntity<>("Error, los datos deben estar correctamente diligenciados.", HttpStatus.BAD_REQUEST);
+            response.put("message", "Error, los datos deben estar correctamente diligenciados.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-        if (service.updateIncidence(incidencia.getIncidenciaId(), incidencia)) {
-            return new ResponseEntity<>("Incidencia actualizada correctamente", HttpStatus.OK);
+
+        // Intentar actualizar la incidencia
+        boolean updated = service.updateIncidence(incidencia.getIncidenciaId(), incidencia);
+        
+        if (updated) {
+            response.put("message", "Incidencia actualizada correctamente");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("message", "Error interno al actualizar la incidencia");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Error interno al actualizar la incidencia", HttpStatus.CONFLICT);
     }
     
+        @GetMapping(value = "searchByUsuario")
+    public ResponseEntity<?> getByUsuario(@RequestParam("usuarioId") int usuarioId) {
+        List<Incidencia> incidencias = service.searchByUsuarioId(usuarioId);
+        if (incidencias.isEmpty()) {
+            return new ResponseEntity<>("No se encontraron incidencias para el usuario con ID: " + usuarioId, HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cant_elements", String.valueOf(incidencias.size()));
+        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
+    }
+
+        @GetMapping(value = "searchByCategory")
+    public ResponseEntity<?> getByCategoria(@RequestParam("categoria") String nombreCategoria) {
+        if (nombreCategoria == null || nombreCategoria.trim().isEmpty()) {
+            return new ResponseEntity<>("Error, la categoría no puede estar vacía.", HttpStatus.BAD_REQUEST);
+        }
+   
+        List<Incidencia> incidencias = service.searchByCategory(nombreCategoria);
+        if (incidencias.isEmpty()) {
+            return new ResponseEntity<>("No se encontraron incidencias para la categoría: " + nombreCategoria, HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("cant_elements", String.valueOf(incidencias.size()));
+        return new ResponseEntity<>(incidencias, headers, HttpStatus.OK);
+    }
+
     @GetMapping(value = "countByLocality")
     public ResponseEntity<List<Map<String, Long>>> getCountByLocality() {
         List<Map<String, Long>> data = service.countIncidencesByLocality();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping(value = "countByCategory")
+   @GetMapping(value = "countByCategory")
     public ResponseEntity<List<Map<String, Long>>> getCountByCategory() {
         List<Map<String, Long>> data = service.countIncidencesByCategory();
         return new ResponseEntity<>(data, HttpStatus.OK);

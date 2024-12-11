@@ -10,12 +10,14 @@ import co.edu.ue.entity.Incidencia;
 public interface IIncidenceDao {
     List<Incidencia> listIncidences();
     List<Incidencia> searchByLocality(String localidad);
-    List<Incidencia> searchByCategory(String nombreCategoria);
     List<Incidencia> searchByDate(Date fecha);
-    List<Incidencia> searchByUsuarioId(int usuarioId);
     boolean postIncidence(Incidencia incidencia);
     boolean updateIncidence(int id, Incidencia incidencia);
     boolean deleteIncidence(int id);
+  
+    
+    List<Incidencia> searchByCategory(String nombreCategoria); 
+    List<Incidencia> searchByUsuarioId(int usuarioId);
     List<Map<String, Long>> countIncidencesByLocality();
     List<Map<String, Long>> countIncidencesByCategory();
     List<Map<String, Long>> countIncidencesByDate();

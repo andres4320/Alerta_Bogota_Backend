@@ -26,20 +26,12 @@ public class IncidenceService implements IIncidenceService{
 		return dao.searchByLocality(localidad);
 	}
 
-    @Override
-	public List<Incidencia> searchByCategory(String nombreCategoria) {
-		return dao.searchByCategory(nombreCategoria); 
-	}
 
 	@Override
 	public List<Incidencia> searchByDate(Date fecha) {
 		System.out.println("Fecha enviada al repositorio: " + fecha);
 		return dao.searchByDate(fecha); 
 	}
-    @Override
-    public List<Incidencia> searchByUsuarioId(int usuarioId) {
-        return dao.searchByUsuarioId(usuarioId);
-    }
 
     @Override
     public boolean postIncidence(Incidencia incidencia) {
@@ -55,7 +47,15 @@ public class IncidenceService implements IIncidenceService{
     public boolean deleteIncidence(int id) {
         return dao.deleteIncidence(id);
     }
-    
+     @Override
+    public List<Incidencia> searchByUsuarioId(int usuarioId) {
+        return dao.searchByUsuarioId(usuarioId);
+  }  
+   
+    @Override
+	public List<Incidencia> searchByCategory(String nombreCategoria) {
+		return dao.searchByCategory(nombreCategoria); 
+	}
 
     @Override
     public List<Map<String, Long>> countIncidencesByLocality() {

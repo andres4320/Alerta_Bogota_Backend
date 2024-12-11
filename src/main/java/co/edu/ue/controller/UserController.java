@@ -58,11 +58,14 @@ public class UserController {
    
    @Operation(summary = "Actualizar usuario", description = "Actualiza la información de un usuario existente.")
    @PutMapping(value = "/update")
-   public ResponseEntity<String> updateUser(@RequestBody Usuario usuario) {
+   public ResponseEntity<Map<String, String>> updateUser(@RequestBody Usuario usuario) {
+       Map<String, String> response = new HashMap<>();
        if (userService.updateUser(usuario.getUsuarioId(), usuario)) {
-           return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
+           response.put("message", "Usuario actualizado con éxito");
+           return new ResponseEntity<>(response, HttpStatus.OK);
        }
-       return new ResponseEntity<>("Error al actualizar el usuario", HttpStatus.BAD_REQUEST);
+       response.put("message", "Error al actualizar el usuario");
+       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
    }
    
    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario específico por su ID.")
